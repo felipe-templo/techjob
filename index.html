@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechJobs - Vagas de TI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@4.4.0/dist/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#8B5CF6',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+    <!-- Navbar -->
+    <nav class="navbar bg-white shadow-lg sticky top-0 z-50">
+        <div class="navbar-start">
+            <div class="dropdown">
+                <div tabindex="0" role="button" class="btn btn-ghost lg:hidden">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16"></path>
+                    </svg>
+                </div>
+                <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+                    <li><a href="#vagas">Vagas</a></li>
+                    <li><a href="#empresas">Empresas</a></li>
+                    <li><a href="#planos">Planos</a></li>
+                </ul>
+            </div>
+            <a class="btn btn-ghost text-xl font-bold text-primary">
+                <i class="fas fa-code mr-2"></i>TechJobs
+            </a>
+        </div>
+        <div class="navbar-center hidden lg:flex">
+            <ul class="menu menu-horizontal px-1">
+                <li><a href="#vagas" class="hover:text-primary">Vagas</a></li>
+                <li><a href="#empresas" class="hover:text-primary">Empresas</a></li>
+                <li><a href="#planos" class="hover:text-primary">Planos</a></li>
+            </ul>
+        </div>
+        <div class="navbar-end gap-2">
+            <button class="btn btn-ghost" onclick="loginModal.showModal()">Login</button>
+            <button class="btn btn-primary" onclick="registerModal.showModal()">Cadastrar</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero min-h-screen bg-gradient-to-r from-blue-600 via-purple-600 to-indigo-600">
+        <div class="hero-overlay bg-opacity-60"></div>
+        <div class="hero-content text-center text-white">
+            <div class="max-w-4xl">
+                <h1 class="text-5xl font-bold mb-6">
+                    Encontre sua próxima oportunidade em <span class="text-yellow-300">TI</span>
+                </h1>
+                <p class="text-xl mb-8">
+                    A plataforma que conecta os melhores profissionais de tecnologia com as empresas mais inovadoras do mercado
+                </p>
+                
+                <!-- Search Bar -->
+                <div class="card bg-white/10 backdrop-blur-md p-6 max-w-4xl mx-auto">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div class="form-control">
+                            <input type="text" placeholder="Cargo ou palavra-chave" class="input input-bordered bg-white text-black" id="searchJob">
+                        </div>
+                        <div class="form-control">
+                            <select class="select select-bordered bg-white text-black" id="searchCity">
+                                <option disabled selected>Cidade</option>
+                                <option>São Paulo</option>
+                                <option>Rio de Janeiro</option>
+                                <option>Belo Horizonte</option>
+                                <option>Brasília</option>
+                                <option>Porto Alegre</option>
+                            </select>
+                        </div>
+                        <div class="form-control">
+                            <select class="select select-bordered bg-white text-black" id="searchSalary">
+                                <option disabled selected>Faixa Salarial</option>
+                                <option>Até R$ 3.000</option>
+                                <option>R$ 3.001 - R$ 6.000</option>
+                                <option>R$ 6.001 - R$ 10.000</option>
+                                <option>R$ 10.001 - R$ 15.000</option>
+                                <option>Acima de R$ 15.000</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary btn-lg" onclick="searchJobs()">
+                            <i class="fas fa-search mr-2"></i>Buscar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Stats -->
+                <div class="stats stats-vertical lg:stats-horizontal shadow mt-8 bg-white/10 backdrop-blur-md text-white">
+                    <div class="stat">
+                        <div class="stat-figure text-primary">
+                            <i class="fas fa-briefcase text-2xl"></i>
+                        </div>
+                        <div class="stat-title text-white/80">Vagas Ativas</div>
+                        <div class="stat-value text-white">1,247</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-figure text-secondary">
+                            <i class="fas fa-users text-2xl"></i>
+                        </div>
+                        <div class="stat-title text-white/80">Candidatos</div>
+                        <div class="stat-value text-white">5,832</div>
+                    </div>
+                    <div class="stat">
+                        <div class="stat-figure text-accent">
+                            <i class="fas fa-building text-2xl"></i>
+                        </div>
+                        <div class="stat-title text-white/80">Empresas</div>
+                        <div class="stat-value text-white">342</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Jobs Section -->
+    <section id="vagas" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Vagas em Destaque</h2>
+                <p class="text-gray-600 text-lg">Oportunidades selecionadas especialmente para você</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" id="jobsList">
+                <!-- Job Cards will be populated by JavaScript -->
+            </div>
+
+            <div class="text-center mt-8">
+                <button class="btn btn-outline btn-primary btn-lg">Ver Todas as Vagas</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="py-16 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Como Funciona</h2>
+                <p class="text-gray-600 text-lg">Processo simples e eficiente para encontrar sua vaga ideal</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="card bg-white shadow-xl">
+                    <div class="card-body text-center">
+                        <div class="text-5xl text-primary mb-4">
+                            <i class="fas fa-user-plus"></i>
+                        </div>
+                        <h3 class="card-title justify-center text-xl mb-2">1. Cadastre-se</h3>
+                        <p class="text-gray-600">Crie seu perfil completo e destaque suas habilidades técnicas</p>
+                    </div>
+                </div>
+
+                <div class="card bg-white shadow-xl">
+                    <div class="card-body text-center">
+                        <div class="text-5xl text-secondary mb-4">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3 class="card-title justify-center text-xl mb-2">2. Busque Vagas</h3>
+                        <p class="text-gray-600">Use nossos filtros avançados para encontrar oportunidades perfeitas</p>
+                    </div>
+                </div>
+
+                <div class="card bg-white shadow-xl">
+                    <div class="card-body text-center">
+                        <div class="text-5xl text-accent mb-4">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h3 class="card-title justify-center text-xl mb-2">3. Conecte-se</h3>
+                        <p class="text-gray-600">Candidate-se e conecte-se diretamente com as empresas</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Plans Section -->
+    <section id="planos" class="py-16 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="text-center mb-12">
+                <h2 class="text-4xl font-bold text-gray-800 mb-4">Planos para Empresas</h2>
+                <p class="text-gray-600 text-lg">Escolha o plano ideal para encontrar os melhores talentos</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <!-- Free Plan -->
+                <div class="card bg-white shadow-xl border-2 border-gray-200">
+                    <div class="card-body">
+                        <h3 class="card-title text-2xl mb-4">Plano Gratuito</h3>
+                        <div class="text-4xl font-bold text-gray-800 mb-4">R$ 0<span class="text-lg font-normal">/mês</span></div>
+                        <ul class="space-y-3 mb-6">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Publicar até 3 vagas</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Receber candidaturas</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Suporte por email</li>
+                            <li class="flex items-center text-gray-400"><i class="fas fa-times text-red-500 mr-3"></i>Acesso ao banco de talentos</li>
+                        </ul>
+                        <button class="btn btn-outline btn-primary w-full">Começar Grátis</button>
+                    </div>
+                </div>
+
+                <!-- Plus Plan -->
+                <div class="card bg-white shadow-xl border-2 border-primary relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2">
+                        <div class="badge badge-primary badge-lg">MAIS POPULAR</div>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="card-title text-2xl mb-4 text-primary">Plano Plus</h3>
+                        <div class="text-4xl font-bold text-primary mb-4">R$ 29,90<span class="text-lg font-normal">/mês</span></div>
+                        <ul class="space-y-3 mb-6">
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Vagas ilimitadas</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Acesso ao banco de talentos</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Match inteligente de candidatos</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Suporte prioritário</li>
+                            <li class="flex items-center"><i class="fas fa-check text-green-500 mr-3"></i>Relatórios detalhados</li>
+                        </ul>
+                        <button class="btn btn-primary w-full">Assinar Agora</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer footer-center p-10 bg-primary text-primary-content">
+        <aside>
+            <div class="text-3xl font-bold mb-4">
+                <i class="fas fa-code mr-2"></i>TechJobs
+            </div>
+            <p class="font-bold">
+                Conectando talentos de TI com as melhores oportunidades
+            </p> 
+            <p>Copyright © 2024 - Todos os direitos reservados</p>
+        </aside> 
+        <nav>
+            <div class="grid grid-flow-col gap-4">
+                <a class="text-2xl hover:text-yellow-300"><i class="fab fa-twitter"></i></a> 
+                <a class="text-2xl hover:text-yellow-300"><i class="fab fa-linkedin"></i></a> 
+                <a class="text-2xl hover:text-yellow-300"><i class="fab fa-instagram"></i></a>
+            </div>
+        </nav>
+    </footer>
+
+    <!-- Login Modal -->
+    <dialog id="loginModal" class="modal">
+        <div class="modal-box">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg mb-4">Login</h3>
+            <div class="form-control mb-4">
+                <label class="label">
+                    <span class="label-text">Email</span>
+                </label>
+                <input type="email" class="input input-bordered" placeholder="seu@email.com">
+            </div>
+            <div class="form-control mb-6">
+                <label class="label">
+                    <span class="label-text">Senha</span>
+                </label>
+                <input type="password" class="input input-bordered" placeholder="********">
+            </div>
+            <div class="modal-action">
+                <button class="btn btn-primary w-full">Entrar</button>
+            </div>
+            <div class="divider">OU</div>
+            <div class="text-center">
+                <p class="text-sm">Não tem conta? <a href="#" class="link link-primary" onclick="loginModal.close(); registerModal.showModal()">Cadastre-se</a></p>
+            </div>
+        </div>
+    </dialog>
+
+    <!-- Register Modal -->
+    <dialog id="registerModal" class="modal">
+        <div class="modal-box max-w-2xl">
+            <form method="dialog">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
+            </form>
+            <h3 class="font-bold text-lg mb-4">Cadastro</h3>
+            
+            <div class="tabs tabs-boxed mb-4">
+                <a class="tab tab-active" onclick="showCandidateForm()">Candidato</a> 
+                <a class="tab" onclick="showCompanyForm()">Empresa</a>
+            </div>
+
+            <!-- Candidate Form -->
+            <div id="candidateForm">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-control">
+                        <label class="label"><span class="label-text">Nome Completo</span></label>
+                        <input type="text" class="input input-bordered" placeholder="João Silva">
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text">Email</span></label>
+                        <input type="email" class="input input-bordered" placeholder="joao@email.com">
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text">Telefone</span></label>
+                        <input type="tel" class="input input-bordered" placeholder="(11) 99999-9999">
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text">Estado</span></label>
+                        <select class="select select-bordered" id="candidateState" onchange="loadCities('candidateState', 'candidateCity')">
+                            <option disabled selected>Selecione seu estado</option>
+                            <option value="SP">São Paulo</option>
+                            <option value="RJ">Rio de Janeiro</option>
+                            <option value="MG">Minas Gerais</option>
+                            <option value="RS">Rio Grande do Sul</option>
+                            <option value="PR">Paraná</option>
+                            <option value="SC">Santa Catarina</option>
+                            <option value="DF">Distrito Federal</option>
+                            <option value="GO">Goiás</option>
+                            <option value="BA">Bahia</option>
+                            <option value="PE">Pernambuco</option>
+                        </select>
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text">Cidade</span></label>
+                        <select class="select select-bordered" id="candidateCity" disabled>
+                            <option disabled selected>Primeiro selecione o estado</option>
+                        </select>
+                    </div>
+                    <div class="form-control md:col-span-2">
+                        <label class="label"><span class="label-text">Área de Interesse</span></label>
+                        <select class="select select-bordered">
+                            <option disabled selected>Selecione sua área</option>
+                            <option>Desenvolvimento Frontend</option>
+                            <option>Desenvolvimento Backend</option>
+                            <option>Full Stack</option>
+                            <option>DevOps</option>
+                            <option>Data Science</option>
+                            <option>QA/Testes</option>
+                        </select>
+                    </div>
+                    <div class="form-control md:col-span-2">
+                        <label class="label"><span class="label-text">Senha</span></label>
+                        <input type="password" class="input input-bordered" placeholder="********">
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <button class="btn btn-primary w-full">Cadastrar como Candidato</button>
+                </div>
+            </div>
+
+            <!-- Company Form -->
+            <div id="companyForm" class="hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="form-control">
+                        <label class="label"><span class="label-text">Nome da Empresa</span></label>
+                        <input type="text" class="input input-bordered" placeholder="Tech Company LTDA">
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text">CNPJ</span></label>
+                        <input type="text" class="input input-bordered" placeholder="12.345.678/0001-90">
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text">Responsável</span></label>
+                        <input type="text" class="input input-bordered" placeholder="Maria Santos">
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text">Email Corporativo</span></label>
+                        <input type="email" class="input input-bordered" placeholder="rh@empresa.com">
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text">Telefone</span></label>
+                        <input type="tel" class="input input-bordered" placeholder="(11) 3333-4444">
+                    </div>
+                    <div class="form-control">
+                        <label class="label"><span class="label-text">Senha</span></label>
+                        <input type="password" class="input input-bordered" placeholder="********">
+                    </div>
+                </div>
+                <div class="modal-action">
+                    <button class="btn btn-primary w-full">Cadastrar Empresa</button>
+                </div>
+            </div>
+        </div>
+    </dialog>
+
+    <script>
+        // Sample job data
+        const jobs = [
+            {
+                title: "Desenvolvedor Full Stack",
+                company: "TechCorp",
+                location: "São Paulo, SP",
+                salary: "R$ 8.000 - R$ 12.000",
+                type: "CLT",
+                tags: ["React", "Node.js", "MongoDB"],
+                logo: "https://via.placeholder.com/50x50/3B82F6/ffffff?text=TC"
+            },
+            {
+                title: "DevOps Engineer",
+                company: "CloudTech",
+                location: "Rio de Janeiro, RJ",
+                salary: "R$ 10.000 - R$ 15.000",
+                type: "CLT",
+                tags: ["AWS", "Docker", "Kubernetes"],
+                logo: "https://via.placeholder.com/50x50/8B5CF6/ffffff?text=CT"
+            },
+            {
+                title: "Data Scientist",
+                company: "DataLab",
+                location: "Belo Horizonte, MG",
+                salary: "R$ 9.000 - R$ 14.000",
+                type: "PJ",
+                tags: ["Python", "Machine Learning", "SQL"],
+                logo: "https://via.placeholder.com/50x50/10B981/ffffff?text=DL"
+            },
+            {
+                title: "Frontend Developer",
+                company: "UX Solutions",
+                location: "Porto Alegre, RS",
+                salary: "R$ 6.000 - R$ 9.000",
+                type: "CLT",
+                tags: ["Vue.js", "TypeScript", "CSS"],
+                logo: "https://via.placeholder.com/50x50/F59E0B/ffffff?text=UX"
+            },
+            {
+                title: "QA Automation",
+                company: "TestPro",
+                location: "Brasília, DF",
+                salary: "R$ 7.000 - R$ 10.000",
+                type: "CLT",
+                tags: ["Selenium", "Cypress", "Java"],
+                logo: "https://via.placeholder.com/50x50/EF4444/ffffff?text=TP"
+            },
+            {
+                title: "Mobile Developer",
+                company: "AppMakers",
+                location: "São Paulo, SP",
+                salary: "R$ 8.500 - R$ 13.000",
+                type: "PJ",
+                tags: ["React Native", "Flutter", "iOS"],
+                logo: "https://via.placeholder.com/50x50/6366F1/ffffff?text=AM"
+            }
+        ];
+
+        // Populate jobs
+        function populateJobs() {
+            const jobsList = document.getElementById('jobsList');
+            jobsList.innerHTML = '';
+
+            jobs.forEach(job => {
+                const jobCard = `
+                    <div class="card bg-white shadow-xl hover:shadow-2xl transition-shadow duration-300">
+                        <div class="card-body">
+                            <div class="flex items-start justify-between mb-4">
+                                <div class="flex items-center gap-3">
+                                    <img src="${job.logo}" alt="${job.company}" class="w-12 h-12 rounded-lg">
+                                    <div>
+                                        <h3 class="card-title text-lg">${job.title}</h3>
+                                        <p class="text-gray-600">${job.company}</p>
+                                    </div>
+                                </div>
+                                <div class="badge badge-outline">${job.type}</div>
+                            </div>
+                            
+                            <div class="space-y-2 mb-4">
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-map-marker-alt mr-2"></i>
+                                    <span>${job.location}</span>
+                                </div>
+                                <div class="flex items-center text-gray-600">
+                                    <i class="fas fa-dollar-sign mr-2"></i>
+                                    <span>${job.salary}</span>
+                                </div>
+                            </div>
+                            
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                ${job.tags.map(tag => `<div class="badge badge-primary badge-outline">${tag}</div>`).join('')}
+                            </div>
+                            
+                            <div class="card-actions justify-end">
+                                <button class="btn btn-primary btn-sm" onclick="applyToJob('${job.title}')">
+                                    <i class="fas fa-paper-plane mr-2"></i>Candidatar-se
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                jobsList.innerHTML += jobCard;
+            });
+        }
+
+        // Search jobs function
+        function searchJobs() {
+            const job = document.getElementById('searchJob').value;
+            const city = document.getElementById('searchCity').value;
+            const salary = document.getElementById('searchSalary').value;
+            
+            // Simple alert for demo purposes
+            alert(`Buscando por:\nCargo: ${job || 'Todos'}\nCidade: ${city || 'Todas'}\nSalário: ${salary || 'Todas as faixas'}`);
+        }
+
+        // Apply to job function
+        function applyToJob(jobTitle) {
+            alert(`Para se candidatar à vaga de ${jobTitle}, você precisa estar logado. Faça login ou cadastre-se!`);
+            loginModal.showModal();
+        }
+
+        // Toggle between candidate and company forms
+        function showCandidateForm() {
+            document.getElementById('candidateForm').classList.remove('hidden');
+            document.getElementById('companyForm').classList.add('hidden');
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('tab-active'));
+            event.target.classList.add('tab-active');
+        }
+
+        function showCompanyForm() {
+            document.getElementById('candidateForm').classList.add('hidden');
+            document.getElementById('companyForm').classList.remove('hidden');
+            document.querySelectorAll('.tab').forEach(tab => tab.classList.remove('tab-active'));
+            event.target.classList.add('tab-active');
+        }
+
+        // Initialize the page
+        document.addEventListener('DOMContentLoaded', function() {
+            populateJobs();
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
